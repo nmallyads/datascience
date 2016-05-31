@@ -5,7 +5,93 @@ tree = ET.parse('./data/mondial_database.xml')
 
 root = tree.getroot()
 
-#name and country of a) longest river, b) largest lake and c) airport at highest elevation
+#name and country of longest river
+def find_name_and_country_longest_river():
+    temp_length = 0
+
+    # dictionary of country code to country name
+    country_code_name_dict = {}
+    for child in root:
+        country_code = child.get('car_code')
+        country_name = child.find('name').text
+        #print('Country : ' + country_name + '  Country code : ' + country_code)
+        country_code_name_dict[country_code] = country_name
+
+
+    for element in tree.iterfind('river'):
+        river_length = element.find('length')
+        if (river_length is not None):
+            river_length = float(river_length.text)
+            if (river_length > temp_length):
+                river_name = element.find('name').text
+                river_country_code = element.find('source').get('country')
+                temp_length = river_length
+
+    print ('River Name ' + river_name)
+    print ('River Length ' + str(river_length))
+    print ('Country  ' + country_code_name_dict[river_country_code])
+
+#find_name_and_country_longest_river()
+
+#name and country of largest lake
+def find_name_and_country_largest_lake():
+    temp_area = 0
+
+    # dictionary of country code to country name
+    country_code_name_dict = {}
+    for child in root:
+        country_code = child.get('car_code')
+        country_name = child.find('name').text
+        #print('Country : ' + country_name + '  Country code : ' + country_code)
+        country_code_name_dict[country_code] = country_name
+
+
+    for element in tree.iterfind('lake'):
+        lake_area = element.find('area')
+        if (lake_area is not None):
+            lake_area = float(lake_area.text)
+            if (lake_area > temp_area):
+                lake_name = element.find('name').text
+                lake_country_code = element.find('located').get('country')
+                temp_area = lake_area
+
+    print ('Lake Name ' + lake_name)
+    print ('Lake Area ' + str(lake_area))
+    print ('Country  ' + country_code_name_dict[lake_country_code])
+
+#find_name_and_country_largest_lake()
+
+
+# name and country of airport at highest elevation
+def find_name_and_country_highest_airport():
+    temp_elevation = 0
+
+    # dictionary of country code to country name
+    country_code_name_dict = {}
+    for child in root:
+        country_code = child.get('car_code')
+        country_name = child.find('name').text
+        #print('Country : ' + country_name + '  Country code : ' + country_code)
+        country_code_name_dict[country_code] = country_name
+
+
+    for element in tree.iterfind('airport'):
+        airport_elevation = element.find('elevation')
+        if (airport_elevation is not None and airport_elevation.text is not None):
+            airport_elevation = float(airport_elevation.text)
+            if (airport_elevation > temp_elevation):
+                airport_name = element.find('name').text
+                airport_country_code = element.get('country')
+                temp_elevation = airport_elevation
+
+    print ('Airport Name ' + airport_name)
+    print ('Airport Area ' + str(airport_elevation))
+    print ('Country  ' + country_code_name_dict[airport_country_code])
+
+find_name_and_country_highest_airport()
+
+
+
 
 #10 ethnic groups with the largest overall populations (sum of best/latest estimates over all countries)
 def find_ethnic_groups_with_largest_population(n):
