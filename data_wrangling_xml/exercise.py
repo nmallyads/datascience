@@ -4,19 +4,23 @@ import xml.etree.ElementTree as ET
 tree = ET.parse('./data/mondial_database.xml')
 
 root = tree.getroot()
+# dictionary of country code to country name
+country_code_name_dict = {}
 
-#name and country of longest river
-def find_name_and_country_longest_river():
-    temp_length = 0
-
-    # dictionary of country code to country name
-    country_code_name_dict = {}
+# helper method to map country codes to country names
+def map_country_codes_to_names():
     for child in root:
         country_code = child.get('car_code')
         country_name = child.find('name').text
         #print('Country : ' + country_name + '  Country code : ' + country_code)
         country_code_name_dict[country_code] = country_name
 
+#name and country of longest river
+def find_name_and_country_longest_river():
+    temp_length = 0
+
+    if(len(country_code_name_dict) == 0):
+        map_country_codes_to_names()
 
     for element in tree.iterfind('river'):
         river_length = element.find('length')
@@ -31,20 +35,14 @@ def find_name_and_country_longest_river():
     print ('River Length ' + str(river_length))
     print ('Country  ' + country_code_name_dict[river_country_code])
 
-#find_name_and_country_longest_river()
+find_name_and_country_longest_river()
 
 #name and country of largest lake
 def find_name_and_country_largest_lake():
     temp_area = 0
 
-    # dictionary of country code to country name
-    country_code_name_dict = {}
-    for child in root:
-        country_code = child.get('car_code')
-        country_name = child.find('name').text
-        #print('Country : ' + country_name + '  Country code : ' + country_code)
-        country_code_name_dict[country_code] = country_name
-
+    if(len(country_code_name_dict) == 0):
+        map_country_codes_to_names()
 
     for element in tree.iterfind('lake'):
         lake_area = element.find('area')
@@ -55,25 +53,19 @@ def find_name_and_country_largest_lake():
                 lake_country_code = element.find('located').get('country')
                 temp_area = lake_area
 
-    print ('Lake Name ' + lake_name)
+    print ('\n\nLake Name ' + lake_name)
     print ('Lake Area ' + str(lake_area))
     print ('Country  ' + country_code_name_dict[lake_country_code])
 
-#find_name_and_country_largest_lake()
+find_name_and_country_largest_lake()
 
 
 # name and country of airport at highest elevation
 def find_name_and_country_highest_airport():
     temp_elevation = 0
 
-    # dictionary of country code to country name
-    country_code_name_dict = {}
-    for child in root:
-        country_code = child.get('car_code')
-        country_name = child.find('name').text
-        #print('Country : ' + country_name + '  Country code : ' + country_code)
-        country_code_name_dict[country_code] = country_name
-
+    if(len(country_code_name_dict) == 0):
+        map_country_codes_to_names()
 
     for element in tree.iterfind('airport'):
         airport_elevation = element.find('elevation')
@@ -84,7 +76,7 @@ def find_name_and_country_highest_airport():
                 airport_country_code = element.get('country')
                 temp_elevation = airport_elevation
 
-    print ('Airport Name ' + airport_name)
+    print ('\n\nAirport Name ' + airport_name)
     print ('Airport Area ' + str(airport_elevation))
     print ('Country  ' + country_code_name_dict[airport_country_code])
 
